@@ -1,0 +1,796 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Kyaw Zayar Win — Network Engineer Portfolio</title>
+<link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Syne:wght@400;700;800&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0a0e1a;
+    --surface: #111827;
+    --border: #1e2d45;
+    --accent: #00d4ff;
+    --accent2: #0077ff;
+    --green: #00ff88;
+    --text: #e2e8f0;
+    --muted: #64748b;
+    --mono: 'Space Mono', monospace;
+    --sans: 'Syne', sans-serif;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: var(--sans);
+    overflow-x: hidden;
+  }
+
+  /* Grid background */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image:
+      linear-gradient(rgba(0,212,255,0.03) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(0,212,255,0.03) 1px, transparent 1px);
+    background-size: 40px 40px;
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  /* Nav */
+  nav {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    z-index: 100;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1.2rem 3rem;
+    background: rgba(10,14,26,0.85);
+    backdrop-filter: blur(16px);
+    border-bottom: 1px solid var(--border);
+  }
+
+  .nav-logo {
+    font-family: var(--mono);
+    font-size: 0.85rem;
+    color: var(--accent);
+    letter-spacing: 0.1em;
+  }
+
+  .nav-links {
+    display: flex;
+    gap: 2rem;
+    list-style: none;
+  }
+
+  .nav-links a {
+    font-family: var(--mono);
+    font-size: 0.75rem;
+    color: var(--muted);
+    text-decoration: none;
+    letter-spacing: 0.05em;
+    transition: color 0.2s;
+  }
+
+  .nav-links a:hover { color: var(--accent); }
+
+  /* Hero */
+  .hero {
+    position: relative;
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    padding: 0 3rem;
+    z-index: 1;
+  }
+
+  .hero-content { max-width: 800px; }
+
+  .hero-tag {
+    font-family: var(--mono);
+    font-size: 0.75rem;
+    color: var(--accent);
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    margin-bottom: 1.5rem;
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+  }
+
+  .hero-tag::before {
+    content: '';
+    width: 2rem;
+    height: 1px;
+    background: var(--accent);
+  }
+
+  .hero h1 {
+    font-size: clamp(3rem, 8vw, 6rem);
+    font-weight: 800;
+    line-height: 1;
+    letter-spacing: -0.02em;
+    margin-bottom: 0.5rem;
+  }
+
+  .hero h1 span {
+    display: block;
+    background: linear-gradient(135deg, var(--accent), var(--accent2));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  .hero-sub {
+    font-family: var(--mono);
+    font-size: 1rem;
+    color: var(--muted);
+    margin: 1.5rem 0 2.5rem;
+    line-height: 1.8;
+    max-width: 550px;
+  }
+
+  .hero-badges {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+    margin-bottom: 3rem;
+  }
+
+  .badge {
+    font-family: var(--mono);
+    font-size: 0.7rem;
+    padding: 0.4rem 0.9rem;
+    border: 1px solid var(--border);
+    border-radius: 100px;
+    color: var(--muted);
+    letter-spacing: 0.05em;
+    transition: all 0.2s;
+  }
+
+  .badge:hover {
+    border-color: var(--accent);
+    color: var(--accent);
+  }
+
+  .badge.active {
+    border-color: var(--green);
+    color: var(--green);
+    background: rgba(0,255,136,0.05);
+  }
+
+  .hero-cta {
+    display: flex;
+    gap: 1rem;
+  }
+
+  .btn {
+    font-family: var(--mono);
+    font-size: 0.8rem;
+    padding: 0.85rem 2rem;
+    border-radius: 4px;
+    text-decoration: none;
+    letter-spacing: 0.05em;
+    transition: all 0.2s;
+    cursor: pointer;
+    border: none;
+  }
+
+  .btn-primary {
+    background: var(--accent);
+    color: var(--bg);
+    font-weight: 700;
+  }
+
+  .btn-primary:hover {
+    background: white;
+    transform: translateY(-2px);
+    box-shadow: 0 8px 30px rgba(0,212,255,0.3);
+  }
+
+  .btn-outline {
+    background: transparent;
+    color: var(--accent);
+    border: 1px solid var(--accent);
+  }
+
+  .btn-outline:hover {
+    background: rgba(0,212,255,0.08);
+    transform: translateY(-2px);
+  }
+
+  /* Floating terminal */
+  .terminal {
+    position: absolute;
+    right: 3rem;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 380px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 40px 80px rgba(0,0,0,0.5);
+  }
+
+  .terminal-bar {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.75rem 1rem;
+    background: #1a2332;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .dot { width: 10px; height: 10px; border-radius: 50%; }
+  .dot.r { background: #ff5f57; }
+  .dot.y { background: #ffbd2e; }
+  .dot.g { background: #28c840; }
+
+  .terminal-title {
+    font-family: var(--mono);
+    font-size: 0.7rem;
+    color: var(--muted);
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  .terminal-body {
+    padding: 1.25rem;
+    font-family: var(--mono);
+    font-size: 0.75rem;
+    line-height: 2;
+  }
+
+  .t-prompt { color: var(--green); }
+  .t-cmd { color: var(--text); }
+  .t-out { color: var(--muted); }
+  .t-acc { color: var(--accent); }
+  .t-cursor {
+    display: inline-block;
+    width: 8px;
+    height: 14px;
+    background: var(--accent);
+    animation: blink 1s step-end infinite;
+    vertical-align: middle;
+  }
+
+  @keyframes blink { 50% { opacity: 0; } }
+
+  /* Sections */
+  section {
+    position: relative;
+    z-index: 1;
+    padding: 6rem 3rem;
+    max-width: 1100px;
+    margin: 0 auto;
+  }
+
+  .section-label {
+    font-family: var(--mono);
+    font-size: 0.7rem;
+    color: var(--accent);
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    margin-bottom: 0.75rem;
+  }
+
+  .section-title {
+    font-size: 2.5rem;
+    font-weight: 800;
+    letter-spacing: -0.02em;
+    margin-bottom: 3rem;
+    color: var(--text);
+  }
+
+  /* About */
+  .about-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 3rem;
+    align-items: start;
+  }
+
+  .about-text {
+    font-family: var(--mono);
+    font-size: 0.85rem;
+    color: var(--muted);
+    line-height: 2;
+  }
+
+  .about-text p { margin-bottom: 1rem; }
+
+  .stats-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+  }
+
+  .stat-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 1.5rem;
+    transition: border-color 0.2s;
+  }
+
+  .stat-card:hover { border-color: var(--accent); }
+
+  .stat-num {
+    font-size: 2rem;
+    font-weight: 800;
+    color: var(--accent);
+    line-height: 1;
+    margin-bottom: 0.4rem;
+  }
+
+  .stat-label {
+    font-family: var(--mono);
+    font-size: 0.7rem;
+    color: var(--muted);
+    letter-spacing: 0.05em;
+  }
+
+  /* Projects */
+  .projects-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1.5rem;
+  }
+
+  .project-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 2rem;
+    position: relative;
+    overflow: hidden;
+    transition: all 0.3s;
+  }
+
+  .project-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 2px;
+    background: linear-gradient(90deg, var(--accent), var(--accent2));
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform 0.3s;
+  }
+
+  .project-card:hover {
+    border-color: var(--accent);
+    transform: translateY(-4px);
+    box-shadow: 0 20px 40px rgba(0,0,0,0.3);
+  }
+
+  .project-card:hover::before { transform: scaleX(1); }
+
+  .project-num {
+    font-family: var(--mono);
+    font-size: 0.7rem;
+    color: var(--accent);
+    margin-bottom: 1rem;
+    letter-spacing: 0.1em;
+  }
+
+  .project-title {
+    font-size: 1.1rem;
+    font-weight: 700;
+    margin-bottom: 0.75rem;
+    color: var(--text);
+  }
+
+  .project-desc {
+    font-family: var(--mono);
+    font-size: 0.78rem;
+    color: var(--muted);
+    line-height: 1.8;
+    margin-bottom: 1.25rem;
+  }
+
+  .project-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+  }
+
+  .tag {
+    font-family: var(--mono);
+    font-size: 0.65rem;
+    padding: 0.25rem 0.6rem;
+    background: rgba(0,212,255,0.08);
+    border: 1px solid rgba(0,212,255,0.2);
+    border-radius: 3px;
+    color: var(--accent);
+    letter-spacing: 0.05em;
+  }
+
+  /* Skills */
+  .skills-container {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 2rem;
+  }
+
+  .skill-group h3 {
+    font-family: var(--mono);
+    font-size: 0.75rem;
+    color: var(--accent);
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    margin-bottom: 1.25rem;
+    padding-bottom: 0.5rem;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .skill-item {
+    margin-bottom: 1rem;
+  }
+
+  .skill-name {
+    font-family: var(--mono);
+    font-size: 0.78rem;
+    color: var(--text);
+    margin-bottom: 0.4rem;
+    display: flex;
+    justify-content: space-between;
+  }
+
+  .skill-pct { color: var(--muted); }
+
+  .skill-bar {
+    height: 3px;
+    background: var(--border);
+    border-radius: 2px;
+    overflow: hidden;
+  }
+
+  .skill-fill {
+    height: 100%;
+    border-radius: 2px;
+    background: linear-gradient(90deg, var(--accent2), var(--accent));
+    animation: fillBar 1.2s ease forwards;
+    transform-origin: left;
+    transform: scaleX(0);
+  }
+
+  @keyframes fillBar { to { transform: scaleX(1); } }
+
+  /* Support Skills */
+  .support-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1rem;
+  }
+
+  .support-card {
+    display: flex;
+    align-items: flex-start;
+    gap: 1rem;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 1.25rem;
+    transition: border-color 0.2s;
+  }
+
+  .support-card:hover { border-color: var(--accent); }
+
+  .support-icon {
+    font-size: 1.25rem;
+    flex-shrink: 0;
+  }
+
+  .support-text h4 {
+    font-size: 0.9rem;
+    font-weight: 700;
+    margin-bottom: 0.3rem;
+  }
+
+  .support-text p {
+    font-family: var(--mono);
+    font-size: 0.72rem;
+    color: var(--muted);
+    line-height: 1.7;
+  }
+
+  /* Certs */
+  .certs-row {
+    display: flex;
+    gap: 1.5rem;
+    flex-wrap: wrap;
+  }
+
+  .cert-card {
+    flex: 1;
+    min-width: 220px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 1.75rem;
+    transition: all 0.2s;
+  }
+
+  .cert-card:hover {
+    border-color: var(--accent);
+    box-shadow: 0 0 30px rgba(0,212,255,0.1);
+  }
+
+  .cert-status {
+    font-family: var(--mono);
+    font-size: 0.65rem;
+    padding: 0.25rem 0.6rem;
+    border-radius: 100px;
+    display: inline-block;
+    margin-bottom: 0.75rem;
+  }
+
+  .cert-status.progress {
+    background: rgba(255,189,46,0.1);
+    border: 1px solid rgba(255,189,46,0.3);
+    color: #ffbd2e;
+  }
+
+  .cert-status.done {
+    background: rgba(0,255,136,0.1);
+    border: 1px solid rgba(0,255,136,0.3);
+    color: var(--green);
+  }
+
+  .cert-name {
+    font-size: 1rem;
+    font-weight: 700;
+    margin-bottom: 0.25rem;
+  }
+
+  .cert-org {
+    font-family: var(--mono);
+    font-size: 0.72rem;
+    color: var(--muted);
+  }
+
+  /* Objective */
+  .objective-box {
+    background: linear-gradient(135deg, rgba(0,212,255,0.05), rgba(0,119,255,0.05));
+    border: 1px solid rgba(0,212,255,0.2);
+    border-radius: 12px;
+    padding: 3rem;
+    text-align: center;
+  }
+
+  .objective-box p {
+    font-family: var(--mono);
+    font-size: 1rem;
+    color: var(--text);
+    line-height: 2;
+    max-width: 700px;
+    margin: 0 auto 2rem;
+  }
+
+  /* Footer */
+  footer {
+    position: relative;
+    z-index: 1;
+    border-top: 1px solid var(--border);
+    padding: 2rem 3rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  footer p {
+    font-family: var(--mono);
+    font-size: 0.72rem;
+    color: var(--muted);
+  }
+
+  footer a {
+    font-family: var(--mono);
+    font-size: 0.72rem;
+    color: var(--accent);
+    text-decoration: none;
+  }
+
+  /* Divider */
+  .divider {
+    border: none;
+    border-top: 1px solid var(--border);
+    margin: 0 3rem;
+  }
+
+  /* Animations */
+  .fade-in {
+    opacity: 0;
+    transform: translateY(20px);
+    animation: fadeIn 0.7s ease forwards;
+  }
+
+  @keyframes fadeIn {
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .fade-in:nth-child(1) { animation-delay: 0.1s; }
+  .fade-in:nth-child(2) { animation-delay: 0.2s; }
+  .fade-in:nth-child(3) { animation-delay: 0.3s; }
+  .fade-in:nth-child(4) { animation-delay: 0.4s; }
+
+  @media (max-width: 900px) {
+    .terminal { display: none; }
+    .about-grid, .projects-grid, .skills-container, .support-grid { grid-template-columns: 1fr; }
+    nav { padding: 1rem 1.5rem; }
+    section { padding: 4rem 1.5rem; }
+    .hero { padding: 6rem 1.5rem 3rem; }
+    footer { flex-direction: column; gap: 1rem; text-align: center; }
+  }
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="nav-logo">KZW // NET_ENGINEER</div>
+  <ul class="nav-links">
+    <li><a href="#about">About</a></li>
+    <li><a href="#projects">Projects</a></li>
+    <li><a href="#skills">Skills</a></li>
+    <li><a href="#certs">Certs</a></li>
+    <li><a href="#objective">Contact</a></li>
+  </ul>
+</nav>
+
+<!-- Hero -->
+<div class="hero">
+  <div class="hero-content">
+    <div class="hero-tag fade-in">Network Engineer Portfolio</div>
+    <h1 class="fade-in">
+      Kyaw<br>
+      <span>Zayar Win</span>
+    </h1>
+    <p class="hero-sub fade-in">
+      ISP Access &amp; Support Specialist<br>
+      Building reliable networks, one packet at a time.
+    </p>
+    <div class="hero-badges fade-in">
+      <span class="badge active">● Available for Work</span>
+      <span class="badge">TCP/IP</span>
+      <span class="badge">VLAN</span>
+      <span class="badge">Packet Tracer</span>
+      <span class="badge">Linux CLI</span>
+      <span class="badge">CCNA In Progress</span>
+    </div>
+    <div class="hero-cta fade-in">
+      <a href="#projects" class="btn btn-primary">View Projects</a>
+      <a href="https://www.credly.com/users/kyaw-zayar-win.1fc275cc" target="_blank" class="btn btn-outline">Credly Profile</a>
+    </div>
+  </div>
+
+  <!-- Terminal -->
+  <div class="terminal">
+    <div class="terminal-bar">
+      <div class="dot r"></div>
+      <div class="dot y"></div>
+      <div class="dot g"></div>
+      <span class="terminal-title">bash — kyaw@isp-lab</span>
+    </div>
+    <div class="terminal-body">
+      <div><span class="t-prompt">kyaw@isp-lab:~$ </span><span class="t-cmd">ping 8.8.8.8</span></div>
+      <div class="t-out">PING 8.8.8.8: 56 data bytes</div>
+      <div class="t-out">64 bytes from 8.8.8.8: icmp_seq=0 ttl=117 <span class="t-acc">time=12ms</span></div>
+      <div class="t-out">64 bytes from 8.8.8.8: icmp_seq=1 ttl=117 <span class="t-acc">time=11ms</span></div>
+      <div>&nbsp;</div>
+      <div><span class="t-prompt">kyaw@isp-lab:~$ </span><span class="t-cmd">traceroute 192.168.1.1</span></div>
+      <div class="t-out">1  gateway (192.168.1.1)  <span class="t-acc">1.2ms</span></div>
+      <div class="t-out">2  isp-core (10.0.0.1)   <span class="t-acc">4.5ms</span></div>
+      <div class="t-out">3  upstream (203.x.x.x)  <span class="t-acc">9.1ms</span></div>
+      <div>&nbsp;</div>
+      <div><span class="t-prompt">kyaw@isp-lab:~$ </span><span class="t-cursor"></span></div>
+    </div>
+  </div>
+</div>
+
+<hr class="divider">
+
+<!-- About -->
+<section id="about">
+  <div class="section-label">// 01 — About</div>
+  <h2 class="section-title">Who I Am</h2>
+  <div class="about-grid">
+    <div class="about-text">
+      <p>Network Engineer with hands-on experience in ISP access network support and troubleshooting. Strong foundation in networking concepts including TCP/IP, subnetting, and VLANs.</p>
+      <p>Practical lab experience using Packet Tracer and VirtualBox. Skilled in identifying and resolving connectivity issues using standard network tools.</p>
+      <p>Passionate about improving technical skills and contributing to reliable network operations in a professional ISP environment.</p>
+    </div>
+    <div class="stats-grid">
+      <div class="stat-card">
+        <div class="stat-num">5+</div>
+        <div class="stat-label">Lab Projects Completed</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-num">3+</div>
+        <div class="stat-label">Tools Proficient In</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-num">ISP</div>
+        <div class="stat-label">Domain Focus</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-num">CCNA</div>
+        <div class="stat-label">In Progress</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<hr class="divider">
+
+<!-- Projects -->
+<section id="projects">
+  <div class="section-label">// 02 — Projects</div>
+  <h2 class="section-title">Hands-on Practice</h2>
+  <div class="projects-grid">
+
+    <div class="project-card">
+      <div class="project-num">PROJECT_01</div>
+      <div class="project-title">Simulated ISP Customer Network</div>
+      <div class="project-desc">Built a simulated ISP customer network using Cisco Packet Tracer, including full IP addressing scheme and VLAN segmentation setup to mirror real-world ISP environments.</div>
+      <div class="project-tags">
+        <span class="tag">Packet Tracer</span>
+        <span class="tag">IP Addressing</span>
+        <span class="tag">VLAN</span>
+        <span class="tag">ISP Topology</span>
+      </div>
+    </div>
+
+    <div class="project-card">
+      <div class="project-num">PROJECT_02</div>
+      <div class="project-title">Router & Switch Topology Lab</div>
+      <div class="project-desc">Configured basic router and switch topologies from scratch, tested end-to-end network connectivity, and verified routing tables across multiple simulated network segments.</div>
+      <div class="project-tags">
+        <span class="tag">Routing</span>
+        <span class="tag">Switching</span>
+        <span class="tag">Connectivity Testing</span>
+        <span class="tag">Packet Tracer</span>
+      </div>
+    </div>
+
+    <div class="project-card">
+      <div class="project-num">PROJECT_03</div>
+      <div class="project-title">Network Troubleshooting Lab</div>
+      <div class="project-desc">Performed systematic troubleshooting using ping, traceroute, and Wireshark packet analysis tools. Identified root causes of connectivity failures and documented resolution steps.</div>
+      <div class="project-tags">
+        <span class="tag">Wireshark</span>
+        <span class="tag">Ping / Traceroute</span>
+        <span class="tag">Packet Analysis</span>
+        <span class="tag">Diagnostics</span>
+      </div>
+    </div>
+
+    <div class="project-card">
+      <div class="project-num">PROJECT_04</div>
+      <div class="project-title">Customer Connectivity Issue Resolution</div>
+      <div class="project-desc">Identified and resolved simulated customer-side connectivity issues, applying ISP support workflow including ticket analysis, escalation process, and SLA-aware resolution.</div>
+      <div class="project-tags">
+        <span class="tag">ISP Support</span>
+        <span class="tag">SLA</span>
+        <span class="tag">Escalation</span>
+        <span class="tag">Ticketing</span>
+      </div>
+    </div>
+
+    <div class="project-card" style="grid-column: 1 / -1;">
+      <div class="project-num">PROJECT_05</div>
+      <div class="project-title">Linux-based Network Lab Environment</div>
+      <div class="project-desc">Built and tested Linux-based network environments using VirtualBox. Set up virtual machines, configured network interfaces, used Linux CLI tools for diagnostics, and practiced basic network commands in a sandboxed lab environment.</div>
+      <div class="project-tags">
+        <span class="tag">Linux CLI</span>
+        <span class="tag">VirtualBox</span>
+        <span class="tag">VM Networking</span>
+        <span class="tag">ifconfig / ip ro
